@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" style="width: 100%; height: 100%">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="refresh"
+      content="0;url={{ track_info.external_urls.spotify }}"
+    />
+    <link rel="dns-prefetch" href="//api.spotify.com" />
+    <link rel="preconnect" href="https://api.spotify.com" crossorigin />
+    <link
+      rel="alternate"
+      type="application/json+oembed"
+      href="{{ url_for('api.oembed', _external=True, id=track_id) }}"
+    />
+    <title>{{ track_info.name }} by {{ artists_string }}</title>
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901&display=swap"
+      rel="stylesheet"
+    />
+    <meta property="description" content="{{ description }}" />
+    <meta property="og:description" content="{{ description }}" />
+    <meta
+      property="og:image"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].url }}{% endif %}"
+    />
+    <meta property="og:site_name" content="FxSpotify" />
+    <meta property="og:title" content="{{ track_info.name }}" />
+    <meta property="og:video" content="{{ preview_url }}" />
+    <meta property="og:type" content="video.other" />
+    <meta
+      property="og:url"
+      content="https://open.spotify.com/track/{{ track_id }}?utm_source=fxspotify"
+    />
+    <meta
+      property="og:video:height"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].height }}{% endif %}"
+    />
+    <meta property="og:video:secure_url" content="{{ preview_url }}" />
+    <meta property="og:video:type" content="video/mp4" />
+    <meta
+      property="og:video:width"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].width }}{% endif %}"
+    />
+    <meta
+      property="og:video:release_date"
+      content="{{ track_info.album.release_date }}"
+    />
+    <meta property="theme-color" content="#1ed760" />
+    <meta property="twitter:card" content="player" />
+    <meta property="twitter:description" content="{{ description }}" />
+    <meta
+      property="twitter:image"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].url }}{% endif %}"
+    />
+    <meta
+      property="twitter:player"
+      content="https://open.spotify.com/embed/track/{{ track_id }}?utm_source=fxspotify"
+    />
+    <meta
+      property="twitter:player:height"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].height }}{% endif %}"
+    />
+    <meta property="twitter:player:stream" content="{{ preview_url }}" />
+    <meta property="twitter:player:stream:content_type" content="audio/mp3" />
+    <meta
+      property="twitter:player:width"
+      content="{% if track_info.album.images %}{{ track_info.album.images[0].width }}{% endif %}"
+    />
+    <meta property="twitter:site" content="spotify" />
+    <meta property="twitter:title" content="{{ track_info.name }}" />
+    <meta
+      property="twitter:url"
+      content="https://open.spotify.com/track/{{ track_id }}?utm_source=fxspotify"
+    />
+  </head>
+  <body
+    style="
+      display: flex;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      font-family: sans-serif;
+    "
+  ></body>
+</html>
