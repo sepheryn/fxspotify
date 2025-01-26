@@ -1,17 +1,27 @@
+import re
 from quart import Blueprint, jsonify, request
 from services.track_service import get_track_info
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-@api_bp.route('/track/<track_id>')
-async def track_api(track_id):
+@api_bp.route('/track/<track_id>', defaults={'intl_part': None})
+@api_bp.route('/<intl_part>/track/<track_id>')
+async def track_api(intl_part, track_id):
     return jsonify(await get_track_info(track_id))
 
 @api_bp.route('/oembed.json')
 async def oembed():
-    track_id = request.args.get('id')
-    if not track_id:
+    track_id_param = request.args.get('id')
+    if not track_id_param:
         return jsonify({"error": "Missing track ID"}), 400
+    
+    if track_id_param.startswith('http'):
+        match = re.search(r'/track/([a-zA-Z0-9]+)', track_id_param)
+        if not match:
+            return jsonify({"error": "Invalid track URL"}), 400
+        track_id = match.group(1)
+    else:
+        track_id = track_id_param
     
     track_info = await get_track_info(track_id)
     if 'error' in track_info:

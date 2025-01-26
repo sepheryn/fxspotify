@@ -23,7 +23,12 @@ async def get_track_info(track_id):
             if not json_data:
                 return {"error": "Failed to extract track data"}
             
-            entity = json_data.get('props', {}).get('pageProps', {}).get('state', {}).get('data', {}).get('entity', {})
+            page_props = json_data.get('props', {}).get('pageProps', {})
+            status = page_props.get('status')
+            if status in [404, 500]:
+                return {"error": "Track not found"}
+            
+            entity = page_props.get('state', {}).get('data', {}).get('entity', {})
             if not entity:
                 return {"error": "No entity data found"}
             
