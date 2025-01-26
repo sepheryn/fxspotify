@@ -1,13 +1,14 @@
-from quart import Blueprint, render_template
+from quart import Blueprint, render_template, request   
 from services.track_service import get_track_info
 
 track_bp = Blueprint('track', __name__)
 
-@track_bp.route('/track/<track_id>')
-async def track_page(track_id):
+@track_bp.route('/track/<track_id>', defaults={'intl_part': None})
+@track_bp.route('/<intl_part>/track/<track_id>')
+async def track_page(intl_part, track_id):
     track_info = await get_track_info(track_id)
     if 'error' in track_info:
-        return await render_template('error.html'), 404
+        return await render_template('error.html')   
     
     preview_url = track_info.get('audio_preview_url')
     artists = [artist['name'] for artist in track_info['artists']]
